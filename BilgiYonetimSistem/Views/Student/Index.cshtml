@@ -1,0 +1,77 @@
+﻿@model BilgiYonetimSistem.Models.Student
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Sayfası</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #EAF6F6, #B4D4E5);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Tüm sayfayı kapsaması için */
+            margin: 0;
+        }
+
+        .info-box {
+            background-color: white;
+            color: #1B4F72;
+            border: 2px solid #5DADE2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .info-box h1 {
+                color: #5DADE2;
+            }
+
+        .button-box a {
+            text-align: center;
+            background-color: white;
+            color: black;
+            border-radius: 8px;
+            border: 2px solid #EAF6F6;
+            transition: all 0.3s ease;
+        }
+
+            .button-box a:hover {
+                background-color: #EAF6F6;
+                color: black;
+                transform: scale(1.05);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        /* Siyah kutunun tamamen kaldırılması */
+        nav {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="w-full max-w-md text-center">
+        <!-- Öğrenci Bilgisi -->
+        <div class="info-box shadow-lg rounded-lg p-6 mb-6">
+            <h1 class="text-2xl font-bold mb-4">Öğrenci Sayfası</h1>
+            <p class="text-lg mb-2"><strong>ID:</strong> @Model.StudentID</p>
+            <p class="text-lg"><strong>Ad Soyad:</strong> @Model.FirstName @Model.LastName</p>
+        </div>
+
+        <!-- Butonlar -->
+        <div class="button-box flex flex-col space-y-4">
+            <a href="@Url.Action("CoursePreference","Student")" class="py-3 px-6 rounded-lg shadow-md font-bold">
+                Ders Seçim
+            </a>
+
+            <a href="@Url.Action("Logout", "Account")" class="py-3 px-6 rounded-lg shadow-md font-bold">
+                Çıkış Yap
+            </a>
+        </div>
+    </div>
+</body>
+</html>
