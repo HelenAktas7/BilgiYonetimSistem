@@ -83,27 +83,26 @@ namespace BilgiYonetimSistem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PendingCourseSelections",
+                name: "PendingSelections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    SelectionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false)
+                    SelectedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PendingCourseSelections", x => x.Id);
+                    table.PrimaryKey("PK_PendingSelections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PendingCourseSelections_Courses_CourseId",
+                        name: "FK_PendingSelections_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PendingCourseSelections_Students_StudentId",
+                        name: "FK_PendingSelections_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentID",
@@ -116,10 +115,10 @@ namespace BilgiYonetimSistem.Migrations
                 {
                     SelectionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentID = table.Column<int>(type: "int", nullable: false),
                     CourseID = table.Column<int>(type: "int", nullable: false),
-                    SelectionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
+                    SelectionDate = table.Column<DateTime>(type: "date", nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    StudentID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -167,13 +166,13 @@ namespace BilgiYonetimSistem.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PendingCourseSelections_CourseId",
-                table: "PendingCourseSelections",
+                name: "IX_PendingSelections_CourseId",
+                table: "PendingSelections",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PendingCourseSelections_StudentId",
-                table: "PendingCourseSelections",
+                name: "IX_PendingSelections_StudentId",
+                table: "PendingSelections",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
@@ -205,7 +204,7 @@ namespace BilgiYonetimSistem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PendingCourseSelections");
+                name: "PendingSelections");
 
             migrationBuilder.DropTable(
                 name: "StudentCourseSelections");

@@ -7,14 +7,20 @@ namespace BilgiYonetimSistem.Models
     {
         [Key]
         public int SelectionID { get; set; }
-        [Required]
-        public int StudentID { get; set; }
-        [Required]
+
         public int CourseID { get; set; }
-        [Required]
+
+        [Column(TypeName = "date")]
         public DateTime SelectionDate { get; set; }
+
         public bool IsApproved { get; set; }
-        public Course Course { get; set; }
-        public Student Student { get; set; }
+        public int StudentID { get; set; }
+
+        // Navigation properties
+        [ForeignKey("StudentID")]
+        public virtual Student? Student { get; set; }
+
+        [ForeignKey("CourseID")]
+        public virtual Course? Course { get; set; }
     }
 }

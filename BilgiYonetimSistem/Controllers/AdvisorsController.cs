@@ -1,135 +1,142 @@
-﻿using BilgiYonetimSistem.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BilgiYonetimSistem.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BilgiYonetimSistem.Controllers
+namespace CourseSelectionApp.Controllers
 {
-    public class Advisors
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdvisorsController : ControllerBase
     {
-        [Route("api/AdvisorController")]
-        [ApiController]
-        public class AdvisorsController : Controller
+        private readonly DataContext _context;
+
+        public AdvisorsController(DataContext context)
         {
-            private readonly DataContext _context;
+            _context = context;
+        }
 
-            public AdvisorsController(DataContext context)
-            {
-                _context = context;
-            }
-
-            [HttpGet("ApproveCourses")]
-            public IActionResult ApproveCourses(int id)
-            {
-
-                var advisor = _context.Advisors
-                    .Include(a => a.Students)
-                    .FirstOrDefault(a => a.AdvisorId == id);
-
-                if (advisor == null)
+      
+        [HttpGet]
+        public async Task<IActionResult> GetAdvisor()
+        {
+            var advisors = await _context.Advisors
+                .Select(a => new
                 {
-                    return NotFound(new { Message = "Advisor not found." });
-                }
-                return View(advisor);
-            }
-
-            [HttpGet("ViewStudentCourses/{studentId}")]
-            public IActionResult ViewStudentCourses(int studentId)
-            {
-
-                var student = _context.Students
-                    .Include(s => s.StudentCourseSelections)
-                        .ThenInclude(sc => sc.Course)
-                    .FirstOrDefault(s => s.StudentID == studentId);
-
-                if (student == null)
-                {
-                    return NotFound(new { Message = "Student not found." });
-                }
-
-                return View(student);
-            }
-
-
-            [HttpGet("getAdvisorList")]
-            public async Task<ActionResult<IEnumerable<Advisor>>> GetAdvisors()
-            {
-                return await _context.Advisors.ToListAsync();
-            }
-
-
-            [HttpGet("getById")]
-            public async Task<ActionResult<Advisor>> GetAdvisor(int id)
-            {
-                var advisor = await _context.Advisors.FindAsync(id);
-
-                if (advisor == null)
-                {
-                    return NotFound(new { Message = "Advisor not found." });
-                }
-
-                return advisor;
-            }
-
-
-            [HttpPost("CreateAdvisor")]
-            public async Task<ActionResult<Advisor>> CreateAdvisor(Advisor advisor)
-            {
-                _context.Advisors.Add(advisor);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetAdvisor", new { id = advisor.AdvisorId }, advisor);
-            }
-
-
-            [HttpPut("{id}")]
-            public async Task<IActionResult> UpdateAdvisor(int id, Advisor advisor)
-            {
-                if (id != advisor.AdvisorId)
-                {
-                    return BadRequest(new { Message = "Advisor ID mismatch." });
-                }
-
-                _context.Entry(advisor).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AdvisorExists(id))
+                    a.AdvisorId,
+                    a.FullName,
+                    a.Title,
+                    a.Department,
+                    a.Email,
+                    Students = a.Students.Select(s => new
                     {
-                        return NotFound(new { Message = "Advisor not found." });
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                        s.StudentID,
+                        s.FirstName,
+                        s.LastName
+                    }).ToList()
+                })
+                .ToListAsync();
 
-                return NoContent();
-            }
+            return Ok(advisors);
+        }
 
 
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteAdvisor(int id)
-            {
-                var advisor = await _context.Advisors.FindAsync(id);
-                if (advisor == null)
+       
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAdvisors(int id)
+        {
+            var advisor = await _context.Advisors
+                .Where(a => a.AdvisorId == id)
+                .Select(a => new
                 {
-                    return NotFound(new { Message = "Advisor not found." });
-                }
+                    a.AdvisorId,
+                    a.FullName,
+                    a.Title,
+                    a.Department,
+                    a.Email,
+                    Students = a.Students.Select(s => new
+                    {
+                        s.StudentID,
+                        s.FirstName,
+                        s.LastName
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
-                _context.Advisors.Remove(advisor);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-
-            private bool AdvisorExists(int id)
+            if (advisor == null)
             {
-                return _context.Advisors.Any(e => e.AdvisorId == id);
+                return NotFound(); 
             }
+
+            return Ok(advisor);
+        }
+
+
+       
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAdvisors(int id, Advisor advisors)
+        {
+            if (id != advisors.AdvisorId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(advisors).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AdvisorsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+     
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Advisor>> PostAdvisors(Advisor advisors)
+        {
+            _context.Advisors.Add(advisors);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAdvisors", new { id = advisors.AdvisorId }, advisors);
+        }
+
+     
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAdvisors(int id)
+        {
+            var advisors = await _context.Advisors.FindAsync(id);
+            if (advisors == null)
+            {
+                return NotFound();
+            }
+
+            _context.Advisors.Remove(advisors);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool AdvisorsExists(int id)
+        {
+            return _context.Advisors.Any(e => e.AdvisorId == id);
         }
     }
 }

@@ -1,0 +1,111 @@
+﻿<body>
+    <div class="container">
+        <div class="w-full max-w-md">
+            <div class="info-box shadow-lg rounded-lg p-6 mb-6 text-center">
+                <h1 class="text-2xl font-bold mb-4">Akademisyen Sayfası</h1>
+                <p class="text-lg mb-2"><strong>ID:</strong> @Model.AdvisorId</p>
+                <p class="text-lg"><strong>Ad Soyad:</strong> @Model.FullName</p>
+            </div>
+            <div class="button-box flex flex-col space-y-4">
+                <a href="@Url.Action("DisplayStudents", "Advisors",new { id = Model.AdvisorId })" class="btn btn-indigo">
+                    Öğrenciler
+                </a>
+                <a href="@Url.Action("AcceptCourse", "Advisors",new { id = Model.AdvisorId })" class="btn btn-indigo">
+                    Ders Onay
+                </a>
+                <a href="@Url.Action("Logout", "Account")" class="btn btn-blue">
+                    Çıkış Yap
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    /* Genel yapı */
+    body {
+        background-color: #EAF6F6; /* Buz mavisi */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center; /* Dikey ortalama */
+        justify-content: center; /* Yatay ortalama */
+        min-height: 100vh; /* Ekran yüksekliğine tam uyum */
+    }
+
+    /* Ana konteyner */
+    .w-full.max-w-md {
+        width: 100%;
+        max-width: 400px;
+        background-color: #FFFFFF; /* Beyaz arka plan */
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Gölge */
+        border-radius: 10px; /* Yuvarlatılmış köşeler */
+    }
+
+    /* Bilgi kutusu */
+    .info-box {
+        background-color: #80d0e5; /* Buz mavisi */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px 10px 0 0; /* Üst köşeler yuvarlak */
+    }
+
+        .info-box h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+    /* Buton kutusu */
+    .button-box {
+        padding: 20px;
+    }
+
+    /* Buton stili */
+    .btn {
+        display: block;
+        background-color: white; /* Beyaz buton */
+        color: black; /* Siyah yazı */
+        text-align: center;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+        transition: all 0.3s ease-in-out; /* Hover geçiş efekti */
+    }
+
+        .btn:hover {
+            background-color: #80d0e5; /* Hover rengi */
+            color: white;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Hover gölgesi */
+            transform: scale(1.03); /* Hafif büyüme */
+        }
+
+        .btn.btn-indigo {
+            background-color: #5DADE2; /* İndigo mavi */
+            color: white;
+        }
+
+            .btn.btn-indigo:hover {
+                background-color: #2a4365;
+            }
+
+        .btn.btn-blue {
+            background-color: #5DADE2; /* Mavi renk */
+            color: white;
+        }
+
+            .btn.btn-blue:hover {
+                background-color: #2a4365;
+            }
+</style>

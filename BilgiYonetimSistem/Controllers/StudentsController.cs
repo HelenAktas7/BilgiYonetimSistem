@@ -21,7 +21,6 @@ namespace BilgiYonetimSistem.Controllers
             _context = context;
         }
 
-        // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
@@ -32,7 +31,7 @@ namespace BilgiYonetimSistem.Controllers
             FirstName = s.FirstName,
             LastName = s.LastName,
             Email = s.Email,
-            AdvisorID = s.AdvisorID, // AdvisorID burada açıkça belirtiliyor
+            AdvisorID = s.AdvisorID, 
             Advisor = s.Advisor != null ? new AdvisorDto
             {
                 FullName = s.Advisor.FullName,
@@ -51,7 +50,7 @@ namespace BilgiYonetimSistem.Controllers
             return Ok(studentsWithAdvisorAndCourses);
         }
 
-        // GET: api/Students/5
+   
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
@@ -66,15 +65,15 @@ namespace BilgiYonetimSistem.Controllers
                     s.AdvisorID,
                     Advisor = new
                     {
-                        s.Advisor.FullName, // Danışmanın adı
-                        s.Advisor.Title, // Danışmanın unvanı
-                        s.Advisor.Department, // Danışmanın bölümü
+                        s.Advisor.FullName, 
+                        s.Advisor.Title,
+                        s.Advisor.Department, 
                         s.Advisor.AdvisorId
                     },
                     Courses = s.StudentCourseSelections.Select(sc => new
                     {
                         sc.CourseID,
-                        sc.Course.CourseName, // Kurs adı
+                        sc.Course.CourseName,
                         sc.SelectionDate
                     }).ToList()
                 })
@@ -82,14 +81,13 @@ namespace BilgiYonetimSistem.Controllers
 
             if (studentWithAdvisorAndCourses == null)
             {
-                return NotFound(); // Öğrenci bulunamazsa 404 döndür
+                return NotFound(); 
             }
 
-            return Ok(studentWithAdvisorAndCourses); // Öğrenci ve ilişkili veriler başarılı şekilde döndürülür
+            return Ok(studentWithAdvisorAndCourses); 
         }
 
 
-        // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStudent(int id, Student student)
@@ -120,7 +118,7 @@ namespace BilgiYonetimSistem.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
+    
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
@@ -131,12 +129,12 @@ namespace BilgiYonetimSistem.Controllers
             return CreatedAtAction("GetStudent", new { id = student.StudentID }, student);
         }
 
-        // DELETE: api/Students/5
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var student = await _context.Students
-                .Include(s => s.StudentCourseSelections) // İlişkili kayıtları getir
+                .Include(s => s.StudentCourseSelections) 
                 .FirstOrDefaultAsync(s => s.StudentID == id);
 
             if (student == null)
@@ -144,10 +142,10 @@ namespace BilgiYonetimSistem.Controllers
                 return NotFound();
             }
 
-            // Önce ilişkili kayıtları sil
+           
             _context.StudentCourseSelections.RemoveRange(student.StudentCourseSelections);
 
-            // Ardından öğrenciyi sil
+            
             _context.Students.Remove(student);
 
             await _context.SaveChangesAsync();

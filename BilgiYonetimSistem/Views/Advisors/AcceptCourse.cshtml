@@ -1,0 +1,147 @@
+﻿@model List<BilgiYonetimSistem.DataTransfer.PendingSelectionsDTO>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derslerim</title>
+    <style>
+        <style >
+        /* Genel Ayarlar */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #EAF6F6; /* Hafif buz mavisi arka plan */
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Başlık Alanı */
+        .header {
+            background-color: #5DADE2; /* Canlı buz mavisi */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ana Konteyner */
+        .container {
+            margin: 30px auto;
+            padding: 20px;
+            max-width: 900px;
+            background-color: #FFFFFF; /* Beyaz arka plan */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Tablo Tasarımı */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            table th, table td {
+                border: 1px solid #ddd;
+                text-align: left;
+                padding: 12px;
+            }
+
+            table th {
+                background-color: #5DADE2; /* Başlık hücreleri için buz mavisi */
+                color: white;
+                font-weight: bold;
+            }
+
+            table tr:nth-child(even) {
+                background-color: #F9F9F9; /* Çift satırlar için açık gri */
+            }
+
+            table tr:hover {
+                background-color: #EAF2F8; /* Satır üzerine gelindiğinde buz mavisi */
+            }
+
+        /* Buton Tasarımı */
+        button {
+            background-color: #5DADE2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+            button:hover {
+                background-color: #3498DB; /* Daha koyu buz mavisi */
+                transform: scale(1.05);
+            }
+
+        /* Footer Tasarımı */
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #5DADE2; /* Buz mavisi */
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="header">
+        Derslerim
+    </div>
+
+    <div class="container">
+        <table>
+
+            <form method="post" action="/Advisors/ApproveRegistration">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Seç</th>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="selectedCourses" value="@course.StudentId-@course.CourseId" />
+                                </td>
+                                <td>@course.StudentId</td>
+                                <td>@($"{course.StudentFirstName} {course.StudentLastName}")</td>
+                                <td>@course.CourseId</td>
+                                <td>@course.CourseName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="submit">Seçilenleri Onayla</button>
+            </form>
+
+        </table>
+    </div>
+
+  
+
+</body>
+</html>

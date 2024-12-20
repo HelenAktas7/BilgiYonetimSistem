@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BilgiYonetimSistem.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241218184044_mig1")]
+    [Migration("20241219165403_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,32 @@ namespace BilgiYonetimSistem.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("BilgiYonetimSistem.Models.PendingSelection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SelectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("PendingSelections");
+                });
+
             modelBuilder.Entity("BilgiYonetimSistem.Models.Student", b =>
                 {
                     b.Property<int>("StudentID")
@@ -145,7 +171,7 @@ namespace BilgiYonetimSistem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("SelectionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int>("StudentID")
                         .HasColumnType("int");
@@ -227,33 +253,23 @@ namespace BilgiYonetimSistem.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PendingCourseSelection", b =>
+            modelBuilder.Entity("BilgiYonetimSistem.Models.PendingSelection", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("BilgiYonetimSistem.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.HasOne("BilgiYonetimSistem.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                    b.Navigation("Course");
 
-                    b.Property<bool>("IsConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("SelectionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("PendingCourseSelections");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("BilgiYonetimSistem.Models.Student", b =>
@@ -295,25 +311,6 @@ namespace BilgiYonetimSistem.Migrations
                     b.HasOne("BilgiYonetimSistem.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("PendingCourseSelection", b =>
-                {
-                    b.HasOne("BilgiYonetimSistem.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BilgiYonetimSistem.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

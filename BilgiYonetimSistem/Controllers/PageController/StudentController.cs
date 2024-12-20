@@ -38,7 +38,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
                 var response = await _httpClient.GetAsync(apiUrl);
                 if (!response.IsSuccessStatusCode)
                 {
-                    ViewBag.ErrorMessage = "Error fetching student data. Status Code: " + response.StatusCode;
+                    ViewBag.ErrorMessage = "Öğrenci verileri alınırken hata oluştu. Durum Kodu: " + response.StatusCode;
                     return View("Error");
                 }
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -47,7 +47,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "An error occurred while fetching data: " + ex.Message;
+                ViewBag.ErrorMessage = "Veriler alınırken bir hata oluştu: " + ex.Message;
                 return View("Error");
             }
         }
@@ -60,7 +60,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
                 var response = await _httpClient.GetAsync(apiUrl);
                 if (!response.IsSuccessStatusCode)
                 {
-                    ViewBag.ErrorMessage = "Error fetching course data. Status Code: " + response.StatusCode;
+                    ViewBag.ErrorMessage = "Kurs verileri alınırken hata oluştu. Durum Kodu:" + response.StatusCode;
                     return View("Error");
                 }
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -70,7 +70,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "An error occurred while fetching data: " + ex.Message;
+                ViewBag.ErrorMessage = "Veriler alınırken bir hata oluştu:" + ex.Message;
                 return View("Error");
             }
         }
@@ -100,23 +100,58 @@ namespace BilgiYonetimSistem.Controllers.PageController
 
                 var response = await _httpClient.PostAsync(apiUrl, content);
                 var responseContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseContent); // Hata mesajını burada kontrol edin
+                Console.WriteLine(responseContent); 
 
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    ViewBag.Message = "Failed to save course selections.";
+                    ViewBag.Message = "Ders seçimleri kaydedilemedi.";
                     return RedirectToAction("CoursePreference");
                 }
 
-                ViewBag.Message = "Courses successfully added to pending selections.";
+                ViewBag.Message = "Dersler bekleyen seçimlere başarıyla eklendi.";
                 return RedirectToAction("CoursePreference");
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "An error occurred while submitting course selections: " + ex.Message;
+                ViewBag.ErrorMessage = "Ders seçimleri gönderilirken bir hata oluştu:" + ex.Message;
                 return View("Error");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> SaveCourseSelection(List<int> selectedCourseIds)
+        {
+            var studentIdString = HttpContext.Session.GetString("StudentID");
+
+            if (string.IsNullOrEmpty(studentIdString))
+            {
+                TempData["ErrorMessage"] = "Öğrenci oturumu bulunamadı. Lütfen yeniden giriş yapın.";
+                return RedirectToAction("LoginUser", "Account");
+            }
+
+            int studentId = int.Parse(studentIdString);
+
+            foreach (var courseId in selectedCourseIds)
+            {
+                var pendingSelections = new PendingSelection
+                {
+                    StudentId = studentId,
+                    CourseId = courseId,
+                    SelectedAt = DateTime.Now
+                };
+
+                var response = await _httpClient.PostAsJsonAsync("https://localhost:7262/api/pendingSelections", pendingSelections);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    TempData["ErrorMessage"] = "Seçiminiz kaydedilemedi, tekrar deneyin.";
+                    return RedirectToAction("CoursePreference", "Student");
+                }
+            }
+
+            TempData["SuccessMessage"] = "Ders seçiminiz başarıyla kaydedildi!";
+            return RedirectToAction("ConfirmedList", "Student");
+        }
+
     }
 }

@@ -17,8 +17,8 @@ namespace BilgiYonetimSistem.Models
         public DbSet<StudentCourseSelection> StudentCourseSelections { get; set; }
         public DbSet<Transcript> Transcripts { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<PendingCourseSelection> PendingCourseSelections { get; set; }
-
+        public DbSet<PendingSelection> PendingSelections { get; set; }
+       
 
     }
 }

@@ -1,13 +1,4 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@model BilgiYonetimSistem.Models.LoginVM
-
-@{
-    ViewData["Title"] = "User Login";
-}
-
+﻿@model BilgiYonetimSistem.Models.LoginVM
 <h2 style="color: #5DADE2; text-align: center;">User Login</h2>
 
 @if (ViewBag.Message != null)
@@ -29,7 +20,9 @@
         border-radius: 10px;
         background-color: white;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
 
     .form-group label {
         color: #1B4F72;
@@ -46,6 +39,7 @@
             box-shadow: 0 0 5px #5DADE2;
         }
 
+
     button.btn-primary {
         background-color: #5DADE2;
         border: none;
@@ -54,6 +48,8 @@
         color: white;
         font-weight: bold;
         transition: all 0.3s ease;
+        margin-top: 15px;
+        margin-bottom: 10px; 
     }
 
         button.btn-primary:hover {

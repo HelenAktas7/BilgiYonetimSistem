@@ -27,31 +27,31 @@ namespace BilgiYonetimSistem.Controllers.PageController
             {
                 var user = await _context.Users
                     .FirstOrDefaultAsync(u => u.Username == model.Username && u.PasswordHash == model.Password && u.Role == model.Role);
-                HttpContext.Session.SetString("UserID", user.UserID.ToString());
-                HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Role", user.Role);
-                HttpContext.Session.SetString("RelatedID", user.RelatedID.ToString());
                 if (user != null)
                 {
+                    HttpContext.Session.SetString("UserID", user.UserID.ToString());
+                    HttpContext.Session.SetString("Username", user.Username);
+                    HttpContext.Session.SetString("Role", user.Role);
+                    HttpContext.Session.SetString("RelatedID", user.RelatedID.ToString());
 
                     if (user.Role == "Student")
                     {
+                        HttpContext.Session.SetString("StudentID", user.RelatedID.ToString());
                         return RedirectToAction("Index", "Student", new { id = user.RelatedID });
                     }
                     else if (user.Role == "Advisor")
                     {
-                        return RedirectToAction("ApproveCourses", "Advisors", new { id = user.RelatedID });
+                        return RedirectToAction("Index", "Advisors", new { id = user.RelatedID });
                     }
                 }
                 else
                 {
-                    ViewBag.Message = "Invalid username, password, or role.";
+                    ViewBag.Message = "Geçersiz kullanıcı adı, şifre veya rol.";
                 }
             }
             return View(model);
         }
-
-
+     
         [HttpGet]
         public IActionResult ForgotPassword()
         {
@@ -73,11 +73,11 @@ namespace BilgiYonetimSistem.Controllers.PageController
 
 
 
-                    ViewBag.Message = "A password reset link has been sent to your email.";
+                    ViewBag.Message = "E-posta adresinize şifre sıfırlama bağlantısı gönderildi.";
                 }
                 else
                 {
-                    ViewBag.Message = "Email address not found.";
+                    ViewBag.Message = "E-posta adresi bulunamadı.";
                 }
             }
 
