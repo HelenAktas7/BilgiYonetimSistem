@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BilgiYonetimSistem.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 namespace BilgiYonetimSistem.Controllers.PageController
 {
     public class AccountController : Controller
@@ -19,7 +21,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
         }
 
 
-        [HttpPost("LoginUser")]
+        [HttpPost]
 
         public async Task<ActionResult> LoginUser(LoginVM model)
         {
@@ -52,6 +54,14 @@ namespace BilgiYonetimSistem.Controllers.PageController
             return View(model);
         }
      
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            // Anasayfaya veya giriş ekranına yönlendirme
+            return RedirectToAction("LoginUser", "Account");
+        }
+
         [HttpGet]
         public IActionResult ForgotPassword()
         {

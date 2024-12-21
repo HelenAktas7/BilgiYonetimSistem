@@ -46,6 +46,14 @@ namespace BilgiYonetimSistem.Controllers.PageController
             }
         }
 
+        public async Task<IActionResult> ApprovedCourseDetails()
+        {
+
+            return View();
+
+        }
+
+
         public async Task<IActionResult> DisplayStudents(int id)
         {
             var response = await _httpClient.GetAsync($"https://localhost:7262/api/students");
@@ -98,7 +106,15 @@ namespace BilgiYonetimSistem.Controllers.PageController
 
 
         }
-        
+
+        public async Task<IActionResult> Routing()
+        {
+            var id = HttpContext.Session.GetString("RelatedID");
+            return RedirectToAction("Index", new { id });
+
+
+        }
+
         public async Task<IActionResult> ApproveRegistration(List<string> selectedCourses)
         {
             if (selectedCourses == null || !selectedCourses.Any())
@@ -154,7 +170,7 @@ namespace BilgiYonetimSistem.Controllers.PageController
                 }
             }
 
-            return RedirectToAction("AcceptCourse", "Advisors");
+            return RedirectToAction("ApprovedCourseDetails", "Advisors");
         }
     }
 }

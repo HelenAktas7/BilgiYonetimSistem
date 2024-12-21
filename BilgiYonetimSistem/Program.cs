@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BilgiYonetimSistem.Models;
+using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 
 
 internal class Program
@@ -46,7 +47,7 @@ internal class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Account}/{action=LoginUser}/{id?}"); // Login sayfas?na yönlendirme
-
+        
         // API route
         app.MapControllers(); // API uç noktalar? için
 

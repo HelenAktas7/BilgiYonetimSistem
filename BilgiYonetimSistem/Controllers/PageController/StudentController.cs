@@ -74,6 +74,20 @@ namespace BilgiYonetimSistem.Controllers.PageController
                 return View("Error");
             }
         }
+        public async Task<IActionResult> ConfirmedList()
+        {
+            return View();
+
+        
+        }
+        public async Task<IActionResult> Routing()
+        {
+            var id = HttpContext.Session.GetString("StudentID");
+            return RedirectToAction("Index", new { id });
+
+
+        }
+
 
         public async Task<IActionResult> CourseSelection(List<int> selectedCourseIds)
         {
