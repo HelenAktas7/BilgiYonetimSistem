@@ -9,77 +9,75 @@
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Genel ayarlar */
+      
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #e0f7fa; /* Buz mavisi arka plan */
+            background-color: #e0f7fa;
             color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            place-items: center; /* Hem yatay hem dikey ortalama */
             height: 100vh;
         }
 
-        /* Genel kutu stili */
+        
         .info-box, .button-box a {
-            background-color: #ffffff; /* Beyaz kutular */
-            border: 1px solid #b2ebf2; /* Buz mavisi kenarlık */
+            background-color: #ffffff; 
+            border: 1px solid #b2ebf2; 
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
             transition: all 0.3s ease;
         }
 
-        /* Öğrenci bilgisi kutusu */
+     
         .info-box {
             padding: 20px;
             text-align: center;
         }
 
             .info-box h1 {
-                color: #0288d1; /* Canlı buz mavisi */
+                color: #0288d1; 
             }
 
             .info-box p {
                 margin: 8px 0;
             }
 
-        /* Buton kutusu */
+     
         .button-box {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px; /* Butonlar arası boşluk */
+            gap: 16px; 
         }
 
-            /* Butonlar */
+          
             .button-box a {
                 text-decoration: none;
-                color: #0288d1; /* Buz mavisi yazı rengi */
+                color: #0288d1; 
                 font-weight: bold;
                 text-align: center;
                 padding: 12px 24px;
             }
 
                 .button-box a:hover {
-                    background-color: #0288d1; /* Buz mavisi arka plan */
-                    color: #ffffff; /* Beyaz yazı rengi */
-                    transform: translateY(-2px); /* Hover efekt */
+                    background-color: #0288d1; 
+                    transform: translateY(-2px);
                 }
 
     </style>
 </head>
 <body>
     <div class="w-full max-w-md text-center">
-        <!-- Öğrenci Bilgisi -->
+     
         <div class="info-box shadow-lg rounded-lg p-6 mb-6">
             <h1 class="text-2xl font-bold mb-4">Öğrenci Sayfası</h1>
             <p class="text-lg mb-2"><strong>ID:</strong> @Model.StudentID</p>
             <p class="text-lg"><strong>Ad Soyad:</strong> @Model.FirstName @Model.LastName</p>
         </div>
 
-        <!-- Butonlar -->
+      
         <div class="button-box flex flex-col space-y-4">
             <a href="@Url.Action("CoursePreference","Student")" class="py-3 px-6 rounded-lg shadow-md font-bold">
                 Ders Seçim

@@ -5,31 +5,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #e8f4fa; /* Buz mavisi arka plan */
             text-align: center;
             padding: 50px;
         }
 
         .message-box {
             display: inline-block;
-            padding: 20px;
-            background-color: #dff0d8;
-            border: 1px solid #3c763d;
-            border-radius: 5px;
-            color: #3c763d;
+            padding: 30px;
+            background-color: white; /* Beyaz kutu */
+            border: 1px solid #cce7f3; /* Hafif buz mavisi kenar */
+            border-radius: 15px; /* Kenarları oval */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+            color: #1a5276; /* Yazı rengi buz mavisi */
         }
+
+            .message-box h1 {
+                margin-bottom: 20px;
+                font-size: 24px; /* Başlık boyutu */
+            }
+
+            .message-box p {
+                margin-bottom: 30px;
+                font-size: 16px; /* Yazı boyutu */
+            }
+
+            .message-box button {
+                background-color: #5bc0de; /* Açık buz mavisi */
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 16px;
+                border-radius: 25px; /* Oval buton */
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.2s; /* Hover efekti */
+            }
+
+                .message-box button:hover {
+                    background-color: #31b0d5; /* Daha koyu buz mavisi */
+                    transform: scale(1.05); /* Hafif büyütme efekti */
+                }
     </style>
 </head>
 <body>
     <div class="message-box">
-        <h1>Ders Seçiminiz Başarıyla Kaydedildi!</h1>
+        <h1>Ders Onayınız Başarıyla Kaydedildi!</h1>
         <p>Seçimleriniz sistemimize başarıyla eklendi. Daha fazla işlem yapmak için menüyü kullanabilirsiniz.</p>
         <form action="/Advisors/Routing" method="get">
-            <button type="submit" style="background-color: #3c763d; color: white; border: none; padding: 10px 20px; text-decoration: none; font-size: 16px; cursor: pointer;">
+            <button type="submit" style="background-color: #31b0d5; color: white; border: none; padding: 10px 20px; text-decoration: none; font-size: 16px; cursor: pointer;">
                 Ders Seçim Sayfasına Dön
             </button>
         </form>
     </div>
-
 </body>
 </html>
